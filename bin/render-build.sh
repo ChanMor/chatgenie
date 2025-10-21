@@ -2,6 +2,6 @@
 
 set -o errexit
 
-bundle install && yarn install && yarn build
+bundle install
 bin/rails assets:precompile
 bin/rails assets:clean
