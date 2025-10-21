@@ -3,8 +3,8 @@ services:
     name: mysite
     runtime: ruby
     plan: free
-    buildCommand: './render-build.sh'
-    startCommand: './rails server'
+    buildCommand: './bin/render-build.sh'
+    startCommand: './bin/rails server'
     envVars:
       - key: postgresql://chatgenie:bfXLQFP3s4wz5HMrCwwVlbfzaUY7vtjf@dpg-d3ru1d24d50c73fmbft0-a/chatgenie_q4j2
         fromDatabase:
