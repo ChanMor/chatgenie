@@ -23,7 +23,8 @@ default: &default
 development:
   <<: *default
   database: lol_development
-
+  username: postgres
+  password: fcdm110503
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
@@ -57,7 +58,8 @@ development:
 test:
   <<: *default
   database: lol_test
-
+  username: postgres
+  password: fcdm110503
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -81,5 +83,5 @@ test:
 production:
   <<: *default
   database: lol_production
-  username: lol
-  password: <%= ENV["LOL_DATABASE_PASSWORD"] %>
+  username: postgres
+  password: fcdm110503
