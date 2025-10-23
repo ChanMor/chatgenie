@@ -6,7 +6,7 @@ echo "Installing Ruby gems..."
 bundle install
 
 echo "Installing Node.js packages with Yarn..."
-yarn install --frozen-lockfile # Use --frozen-lockfile for CI/CD
+yarn install
 
 echo "Precompiling assets (this will run yarn build internally)..."
 bin/rails assets:precompile
