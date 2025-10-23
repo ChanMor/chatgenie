@@ -22,14 +22,13 @@ default: &default
 
 development:
   <<: *default
-  database: lol_development
-  username: postgres
-  password: fcdm110503
+  database: mysite_development
+
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: lol
+  #username: mysite
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -57,9 +56,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: lol_test
-  username: postgres
-  password: fcdm110503
+  database: mysite_test
+
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -77,11 +75,30 @@ test:
 #   production:
 #     url: <%= ENV["MY_APP_DATABASE_URL"] %>
 #
+# Connection URLs for non-primary databases can also be configured using
+# environment variables. The variable name is formed by concatenating the
+# connection name with `_DATABASE_URL`. For example:
+#
+#   CACHE_DATABASE_URL="postgres://cacheuser:cachepass@localhost/cachedatabase"
+#
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: lol_production
-  username: postgres
-  password: fcdm110503
+  primary: &primary_production
+    <<: *default
+    database: mysite_production
+    username: mysite
+    password: <%= ENV["MYSITE_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: mysite_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: mysite_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: mysite_production_cable
+    migrations_paths: db/cable_migrate
