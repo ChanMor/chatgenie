@@ -30,10 +30,10 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@hotwired/stimulus", "npm:3.2.2"],\
           ["@hotwired/turbo-rails", "npm:8.0.18"],\
-          ["@tailwindcss/cli", "npm:4.1.15"],\
+          ["@tailwindcss/cli", "npm:4.1.16"],\
           ["app", "workspace:."],\
           ["esbuild", "npm:0.25.11"],\
-          ["tailwindcss", "npm:4.1.15"]\
+          ["tailwindcss", "npm:4.1.16"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -327,7 +327,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@hotwired/turbo", "npm:8.0.18"],\
           ["@hotwired/turbo-rails", "npm:8.0.18"],\
-          ["@rails/actioncable", "npm:8.0.300"]\
+          ["@rails/actioncable", "npm:8.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -607,157 +607,157 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@rails/actioncable", [\
-      ["npm:8.0.300", {\
-        "packageLocation": "../../../.yarn/berry/cache/@rails-actioncable-npm-8.0.300-bcdf146486-10c0.zip/node_modules/@rails/actioncable/",\
+      ["npm:8.1.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/@rails-actioncable-npm-8.1.0-eaebec1fc7-10c0.zip/node_modules/@rails/actioncable/",\
         "packageDependencies": [\
-          ["@rails/actioncable", "npm:8.0.300"]\
+          ["@rails/actioncable", "npm:8.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/cli", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-cli-npm-4.1.15-2bbb585ee1-10c0.zip/node_modules/@tailwindcss/cli/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-cli-npm-4.1.16-9b746ed0c6-10c0.zip/node_modules/@tailwindcss/cli/",\
         "packageDependencies": [\
           ["@parcel/watcher", "npm:2.5.1"],\
-          ["@tailwindcss/cli", "npm:4.1.15"],\
-          ["@tailwindcss/node", "npm:4.1.15"],\
-          ["@tailwindcss/oxide", "npm:4.1.15"],\
+          ["@tailwindcss/cli", "npm:4.1.16"],\
+          ["@tailwindcss/node", "npm:4.1.16"],\
+          ["@tailwindcss/oxide", "npm:4.1.16"],\
           ["enhanced-resolve", "npm:5.18.3"],\
           ["mri", "npm:1.2.0"],\
           ["picocolors", "npm:1.1.1"],\
-          ["tailwindcss", "npm:4.1.15"]\
+          ["tailwindcss", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/node", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-node-npm-4.1.15-dd32e3d914-10c0.zip/node_modules/@tailwindcss/node/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-node-npm-4.1.16-dfb22889d6-10c0.zip/node_modules/@tailwindcss/node/",\
         "packageDependencies": [\
           ["@jridgewell/remapping", "npm:2.3.5"],\
-          ["@tailwindcss/node", "npm:4.1.15"],\
+          ["@tailwindcss/node", "npm:4.1.16"],\
           ["enhanced-resolve", "npm:5.18.3"],\
           ["jiti", "npm:2.6.1"],\
           ["lightningcss", "npm:1.30.2"],\
           ["magic-string", "npm:0.30.19"],\
           ["source-map-js", "npm:1.2.1"],\
-          ["tailwindcss", "npm:4.1.15"]\
+          ["tailwindcss", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-oxide-npm-4.1.15-259c598aef-10c0.zip/node_modules/@tailwindcss/oxide/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "../../../.yarn/berry/cache/@tailwindcss-oxide-npm-4.1.16-a8c500c1c6-10c0.zip/node_modules/@tailwindcss/oxide/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-android-arm64", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-darwin-arm64", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-darwin-x64", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-freebsd-x64", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-linux-arm-gnueabihf", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-linux-arm64-gnu", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-linux-arm64-musl", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-linux-x64-gnu", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-linux-x64-musl", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-wasm32-wasi", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-win32-arm64-msvc", "npm:4.1.15"],\
-          ["@tailwindcss/oxide-win32-x64-msvc", "npm:4.1.15"]\
+          ["@tailwindcss/oxide", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-android-arm64", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-darwin-arm64", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-darwin-x64", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-freebsd-x64", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-linux-arm-gnueabihf", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-linux-arm64-gnu", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-linux-arm64-musl", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-linux-x64-gnu", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-linux-x64-musl", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-wasm32-wasi", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-win32-arm64-msvc", "npm:4.1.16"],\
+          ["@tailwindcss/oxide-win32-x64-msvc", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-android-arm64", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-android-arm64-npm-4.1.15-8df16d52f6/node_modules/@tailwindcss/oxide-android-arm64/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-android-arm64-npm-4.1.16-39940b9f24/node_modules/@tailwindcss/oxide-android-arm64/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-android-arm64", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-android-arm64", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-darwin-arm64", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-darwin-arm64-npm-4.1.15-ed10b8f639/node_modules/@tailwindcss/oxide-darwin-arm64/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-darwin-arm64-npm-4.1.16-50d848f79c/node_modules/@tailwindcss/oxide-darwin-arm64/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-darwin-arm64", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-darwin-arm64", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-darwin-x64", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-darwin-x64-npm-4.1.15-b2f7e65c7b/node_modules/@tailwindcss/oxide-darwin-x64/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-darwin-x64-npm-4.1.16-823a011212/node_modules/@tailwindcss/oxide-darwin-x64/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-darwin-x64", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-darwin-x64", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-freebsd-x64", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-freebsd-x64-npm-4.1.15-9effa72ef6/node_modules/@tailwindcss/oxide-freebsd-x64/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-freebsd-x64-npm-4.1.16-1630f71461/node_modules/@tailwindcss/oxide-freebsd-x64/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-freebsd-x64", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-freebsd-x64", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-linux-arm-gnueabihf", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm-gnueabihf-npm-4.1.15-f8f9280710/node_modules/@tailwindcss/oxide-linux-arm-gnueabihf/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm-gnueabihf-npm-4.1.16-47588b82a3/node_modules/@tailwindcss/oxide-linux-arm-gnueabihf/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-linux-arm-gnueabihf", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-linux-arm-gnueabihf", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-linux-arm64-gnu", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm64-gnu-npm-4.1.15-93e7936769/node_modules/@tailwindcss/oxide-linux-arm64-gnu/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm64-gnu-npm-4.1.16-ca30c39122/node_modules/@tailwindcss/oxide-linux-arm64-gnu/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-linux-arm64-gnu", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-linux-arm64-gnu", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-linux-arm64-musl", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm64-musl-npm-4.1.15-23132ecaf0/node_modules/@tailwindcss/oxide-linux-arm64-musl/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-arm64-musl-npm-4.1.16-ebf6df850e/node_modules/@tailwindcss/oxide-linux-arm64-musl/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-linux-arm64-musl", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-linux-arm64-musl", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-linux-x64-gnu", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-x64-gnu-npm-4.1.15-1c53fcd02a/node_modules/@tailwindcss/oxide-linux-x64-gnu/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-x64-gnu-npm-4.1.16-c17e288b26/node_modules/@tailwindcss/oxide-linux-x64-gnu/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-linux-x64-gnu", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-linux-x64-gnu", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-linux-x64-musl", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-x64-musl-npm-4.1.15-8bcdab7552/node_modules/@tailwindcss/oxide-linux-x64-musl/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-linux-x64-musl-npm-4.1.16-61a18834a1/node_modules/@tailwindcss/oxide-linux-x64-musl/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-linux-x64-musl", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-linux-x64-musl", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-wasm32-wasi", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-wasm32-wasi-npm-4.1.15-ee4c9b39f4/node_modules/@tailwindcss/oxide-wasm32-wasi/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-wasm32-wasi-npm-4.1.16-389eaa1354/node_modules/@tailwindcss/oxide-wasm32-wasi/",\
         "packageDependencies": [\
           ["@emnapi/core", "npm:1.6.0"],\
           ["@emnapi/runtime", "npm:1.6.0"],\
           ["@emnapi/wasi-threads", "npm:1.1.0"],\
           ["@napi-rs/wasm-runtime", "npm:1.0.7"],\
-          ["@tailwindcss/oxide-wasm32-wasi", "npm:4.1.15"],\
+          ["@tailwindcss/oxide-wasm32-wasi", "npm:4.1.16"],\
           ["@tybys/wasm-util", "npm:0.10.1"],\
           ["tslib", "npm:2.8.1"]\
         ],\
@@ -765,19 +765,19 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@tailwindcss/oxide-win32-arm64-msvc", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-win32-arm64-msvc-npm-4.1.15-9b20f5ca01/node_modules/@tailwindcss/oxide-win32-arm64-msvc/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-win32-arm64-msvc-npm-4.1.16-8cc231c4bc/node_modules/@tailwindcss/oxide-win32-arm64-msvc/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-win32-arm64-msvc", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-win32-arm64-msvc", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@tailwindcss/oxide-win32-x64-msvc", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-win32-x64-msvc-npm-4.1.15-8767c35a76/node_modules/@tailwindcss/oxide-win32-x64-msvc/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "./.yarn/unplugged/@tailwindcss-oxide-win32-x64-msvc-npm-4.1.16-881416c7d6/node_modules/@tailwindcss/oxide-win32-x64-msvc/",\
         "packageDependencies": [\
-          ["@tailwindcss/oxide-win32-x64-msvc", "npm:4.1.15"]\
+          ["@tailwindcss/oxide-win32-x64-msvc", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -849,10 +849,10 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@hotwired/stimulus", "npm:3.2.2"],\
           ["@hotwired/turbo-rails", "npm:8.0.18"],\
-          ["@tailwindcss/cli", "npm:4.1.15"],\
+          ["@tailwindcss/cli", "npm:4.1.16"],\
           ["app", "workspace:."],\
           ["esbuild", "npm:0.25.11"],\
-          ["tailwindcss", "npm:4.1.15"]\
+          ["tailwindcss", "npm:4.1.16"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -1859,10 +1859,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["tailwindcss", [\
-      ["npm:4.1.15", {\
-        "packageLocation": "../../../.yarn/berry/cache/tailwindcss-npm-4.1.15-976209ac56-10c0.zip/node_modules/tailwindcss/",\
+      ["npm:4.1.16", {\
+        "packageLocation": "../../../.yarn/berry/cache/tailwindcss-npm-4.1.16-895d57c2ec-10c0.zip/node_modules/tailwindcss/",\
         "packageDependencies": [\
-          ["tailwindcss", "npm:4.1.15"]\
+          ["tailwindcss", "npm:4.1.16"]\
         ],\
         "linkType": "HARD"\
       }]\
