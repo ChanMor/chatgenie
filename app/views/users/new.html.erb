@@ -1,10 +1,12 @@
 <div style="display: flex; min-height: 100vh; flex-direction: column; justify-content: center; padding: 1.5rem 1rem; background-color: #111827;">
-  <div style="margin: 0 auto; width: 100%; max-width: 24rem;">
+  <%# MODIFIED: Container is now wider %>
+  <div style="margin: 0 auto; width: 100%; max-width: 42rem;">
     <h2 style="margin-top: 2.5rem; text-align: center; font-size: 1.5rem; font-weight: 700; color: #ffffff;">
       Create a new account
     </h2>
   </div>
-  <div style="margin-top: 2.5rem; margin-left: auto; margin-right: auto; width: 100%; max-width: 24rem;">
+  <%# MODIFIED: Container is now wider %>
+  <div style="margin-top: 2.5rem; margin-left: auto; margin-right: auto; width: 100%; max-width: 42rem;">
     <%= form_with(model: @user, url: users_path) do |form| %>
       <% if @user.errors.any? %>
         <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #991b1b; background-color: #450a0a; color: #fecaca; border-radius: 0.375rem;">
@@ -16,12 +18,44 @@
           </ul>
         </div>
       <% end %>
-      <div style="margin-bottom: 1.5rem;">
-        <%= form.label :email, "Email address", style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
-        <div style="margin-top: 0.5rem;">
-          <%= form.email_field :email, required: true, style: "display: block; width: 100%; border-radius: 0.375rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.375rem 0.75rem; color: #ffffff;" %>
+
+      <%# NEW: Flex container for First and Last name %>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <%# First Name field wrapper %>
+        <div style="flex: 1;">
+          <%= form.label :first_name, style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
+          <div style="margin-top: 0.5rem;">
+            <%= form.text_field :first_name, required: true, style: "display: block; width: 100%; border-radius: 0.375rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.375rem 0.75rem; color: #ffffff;" %>
+          </div>
+        </div>
+        <%# Last Name field wrapper %>
+        <div style="flex: 1;">
+          <%= form.label :last_name, style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
+          <div style="margin-top: 0.5rem;">
+            <%= form.text_field :last_name, required: true, style: "display: block; width: 100%; border-radius: 0.375rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.375rem 0.75rem; color: #ffffff;" %>
+          </div>
         </div>
       </div>
+
+      <%# NEW: Flex container for Email and Contact number %>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <%# Email field wrapper %>
+        <div style="flex: 1;">
+          <%= form.label :email, "Email address", style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
+          <div style="margin-top: 0.5rem;">
+            <%= form.email_field :email, required: true, style: "display: block; width: 100%; border-radius: 0.375rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.375rem 0.75rem; color: #ffffff;" %>
+          </div>
+        </div>
+        <%# Contact Number field wrapper %>
+        <div style="flex: 1;">
+          <%= form.label :contact_number, style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
+          <div style="margin-top: 0.5rem;">
+            <%= form.text_field :contact_number, required: true, style: "display: block; width: 100%; border-radius: 0.375rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.375rem 0.75rem; color: #ffffff;" %>
+          </div>
+        </div>
+      </div>
+      
+      <%# Password fields remain full-width %>
       <div style="margin-bottom: 1.5rem;">
         <%= form.label :password, style: "display: block; font-size: 0.875rem; font-weight: 500; color: #e5e7eb;" %>
         <div style="margin-top: 0.5rem;">

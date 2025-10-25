@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    # Add :first_name, :last_name, and :contact_number to the list of permitted attributes
+    params.require(:user).permit(:first_name, :last_name, :contact_number, :email, :password, :password_confirmation)
   end
 end
