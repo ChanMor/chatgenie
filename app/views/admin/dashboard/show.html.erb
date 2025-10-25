@@ -134,24 +134,24 @@
             <div style="font-size: 1.75rem; font-weight: 700; color: <%= date == Date.today ? '#818cf8' : '#ffffff' %>; margin-top: 0.25rem;"><%= date.day %></div>
           </div>
           
-          <% day_reservations = @reservations_by_date[date] || [] %>
-          <% if day_reservations.any? %>
+          <% day_time_slots = @time_slots_by_date[date] || [] %>
+          <% if day_time_slots.any? %>
             <div style="font-size: 0.875rem;">
-              <% day_reservations.first(3).each do |item| %>
+              <% day_time_slots.first(3).each do |time_slot| %>
                 <div class="time-slot-card"
-                     data-slot-id="<%= item[:time_slot].id %>"
-                     data-slot-time="<%= item[:time_slot].start_time.strftime("%l:%M %p") %>"
-                     data-slot-date="<%= item[:time_slot].start_time.strftime("%A, %B %d, %Y") %>"
-                     data-max-tables="<%= item[:time_slot].max_tables %>"
-                     data-table-capacity="<%= item[:time_slot].table_capacity %>"
-                     data-reservation-count="<%= item[:time_slot].reservations.count %>"
-                     onclick="openReservationModal(<%= item[:time_slot].id %>)"
+                     data-slot-id="<%= time_slot.id %>"
+                     data-slot-time="<%= time_slot.start_time.strftime("%l:%M %p") %>"
+                     data-slot-date="<%= time_slot.start_time.strftime("%A, %B %d, %Y") %>"
+                     data-max-tables="<%= time_slot.max_tables %>"
+                     data-table-capacity="<%= time_slot.table_capacity %>"
+                     data-reservation-count="<%= time_slot.reservations.count %>"
+                     onclick="openReservationModal(<%= time_slot.id %>)"
                      style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(79, 70, 229, 0.1) 100%); padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 0.5rem; border-left: 2px solid #4f46e5; color: #e5e7eb; cursor: pointer; transition: all 0.2s;"
                      onmouseover="this.style.backgroundColor='rgba(79, 70, 229, 0.3)';"
                      onmouseout="this.style.background='linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(79, 70, 229, 0.1) 100%)';">
-                  <%= item[:time_slot].start_time.strftime("%l:%M%p") %>
-                  <% item[:time_slot].reservations.each do |reservation| %>
-                    <div class="reservation-data-<%= item[:time_slot].id %>" style="display: none;"
+                  <%= time_slot.start_time.strftime("%l:%M%p") %>
+                  <% time_slot.reservations.each do |reservation| %>
+                    <div class="reservation-data-<%= time_slot.id %>" style="display: none;"
                          data-user-name="<%= reservation.user.full_name %>"
                          data-user-email="<%= reservation.user.email %>"
                          data-user-phone="<%= reservation.user.contact_number %>"
@@ -162,20 +162,20 @@
                   <% end %>
                 </div>
               <% end %>
-              <% if day_reservations.count > 3 %>
+              <% if day_time_slots.count > 3 %>
                 <% # Store hidden time slots for the modal %>
-                <% day_reservations[3..-1].each do |item| %>
+                <% day_time_slots[3..-1].each do |time_slot| %>
                   <div class="time-slot-card" style="display: none;"
-                       data-slot-id="<%= item[:time_slot].id %>"
-                       data-slot-time="<%= item[:time_slot].start_time.strftime("%l:%M %p") %>"
-                       data-slot-date="<%= item[:time_slot].start_time.strftime("%A, %B %d, %Y") %>"
-                       data-max-tables="<%= item[:time_slot].max_tables %>"
-                       data-table-capacity="<%= item[:time_slot].table_capacity %>"
-                       data-reservation-count="<%= item[:time_slot].reservations.count %>"
-                       onclick="openReservationModal(<%= item[:time_slot].id %>)">
-                    <%= item[:time_slot].start_time.strftime("%l:%M%p") %>
-                    <% item[:time_slot].reservations.each do |reservation| %>
-                      <div class="reservation-data-<%= item[:time_slot].id %>" style="display: none;"
+                       data-slot-id="<%= time_slot.id %>"
+                       data-slot-time="<%= time_slot.start_time.strftime("%l:%M %p") %>"
+                       data-slot-date="<%= time_slot.start_time.strftime("%A, %B %d, %Y") %>"
+                       data-max-tables="<%= time_slot.max_tables %>"
+                       data-table-capacity="<%= time_slot.table_capacity %>"
+                       data-reservation-count="<%= time_slot.reservations.count %>"
+                       onclick="openReservationModal(<%= time_slot.id %>)">
+                    <%= time_slot.start_time.strftime("%l:%M%p") %>
+                    <% time_slot.reservations.each do |reservation| %>
+                      <div class="reservation-data-<%= time_slot.id %>" style="display: none;"
                            data-user-name="<%= reservation.user.full_name %>"
                            data-user-email="<%= reservation.user.email %>"
                            data-user-phone="<%= reservation.user.contact_number %>"
@@ -190,7 +190,7 @@
                      style="color: #818cf8; font-size: 0.75rem; margin-top: 0.5rem; text-align: center; cursor: pointer; padding: 0.5rem; border-radius: 0.375rem; transition: all 0.2s;"
                      onmouseover="this.style.backgroundColor='rgba(79, 70, 229, 0.2)'; this.style.color='#a5b4fc';"
                      onmouseout="this.style.backgroundColor='transparent'; this.style.color='#818cf8';">
-                  +<%= day_reservations.count - 3 %> more (click to view)
+                  +<%= day_time_slots.count - 3 %> more (click to view)
                 </div>
               <% end %>
             </div>
@@ -227,24 +227,24 @@
             </div>
             
             <% if is_current_month %>
-              <% day_reservations = @reservations_by_date[date] || [] %>
-              <% if day_reservations.any? %>
+              <% day_time_slots = @time_slots_by_date[date] || [] %>
+              <% if day_time_slots.any? %>
                 <div style="font-size: 0.75rem;">
-                  <% day_reservations.first(2).each do |item| %>
+                  <% day_time_slots.first(2).each do |time_slot| %>
                     <div class="time-slot-card"
-                         data-slot-id="<%= item[:time_slot].id %>"
-                         data-slot-time="<%= item[:time_slot].start_time.strftime("%l:%M %p") %>"
-                         data-slot-date="<%= item[:time_slot].start_time.strftime("%A, %B %d, %Y") %>"
-                         data-max-tables="<%= item[:time_slot].max_tables %>"
-                         data-table-capacity="<%= item[:time_slot].table_capacity %>"
-                         data-reservation-count="<%= item[:time_slot].reservations.count %>"
-                         onclick="openReservationModal(<%= item[:time_slot].id %>)"
+                         data-slot-id="<%= time_slot.id %>"
+                         data-slot-time="<%= time_slot.start_time.strftime("%l:%M %p") %>"
+                         data-slot-date="<%= time_slot.start_time.strftime("%A, %B %d, %Y") %>"
+                         data-max-tables="<%= time_slot.max_tables %>"
+                         data-table-capacity="<%= time_slot.table_capacity %>"
+                         data-reservation-count="<%= time_slot.reservations.count %>"
+                         onclick="openReservationModal(<%= time_slot.id %>)"
                          style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.25) 0%, rgba(79, 70, 229, 0.15) 100%); padding: 0.25rem 0.375rem; border-radius: 0.25rem; margin-bottom: 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #d1d5db; border-left: 2px solid #4f46e5; cursor: pointer; transition: all 0.2s;"
                          onmouseover="this.style.backgroundColor='rgba(79, 70, 229, 0.35)';"
                          onmouseout="this.style.background='linear-gradient(135deg, rgba(79, 70, 229, 0.25) 0%, rgba(79, 70, 229, 0.15) 100%)';">
-                      <%= item[:time_slot].start_time.strftime("%l:%M%p") %>
-                      <% item[:time_slot].reservations.each do |reservation| %>
-                        <div class="reservation-data-<%= item[:time_slot].id %>" style="display: none;"
+                      <%= time_slot.start_time.strftime("%l:%M%p") %>
+                      <% time_slot.reservations.each do |reservation| %>
+                        <div class="reservation-data-<%= time_slot.id %>" style="display: none;"
                              data-user-name="<%= reservation.user.full_name %>"
                              data-user-email="<%= reservation.user.email %>"
                              data-user-phone="<%= reservation.user.contact_number %>"
@@ -255,20 +255,20 @@
                       <% end %>
                     </div>
                   <% end %>
-                  <% if day_reservations.count > 2 %>
+                  <% if day_time_slots.count > 2 %>
                     <% # Store hidden time slots for the modal %>
-                    <% day_reservations[2..-1].each do |item| %>
+                    <% day_time_slots[2..-1].each do |time_slot| %>
                       <div class="time-slot-card" style="display: none;"
-                           data-slot-id="<%= item[:time_slot].id %>"
-                           data-slot-time="<%= item[:time_slot].start_time.strftime("%l:%M %p") %>"
-                           data-slot-date="<%= item[:time_slot].start_time.strftime("%A, %B %d, %Y") %>"
-                           data-max-tables="<%= item[:time_slot].max_tables %>"
-                           data-table-capacity="<%= item[:time_slot].table_capacity %>"
-                           data-reservation-count="<%= item[:time_slot].reservations.count %>"
-                           onclick="openReservationModal(<%= item[:time_slot].id %>)">
-                        <%= item[:time_slot].start_time.strftime("%l:%M%p") %>
-                        <% item[:time_slot].reservations.each do |reservation| %>
-                          <div class="reservation-data-<%= item[:time_slot].id %>" style="display: none;"
+                           data-slot-id="<%= time_slot.id %>"
+                           data-slot-time="<%= time_slot.start_time.strftime("%l:%M %p") %>"
+                           data-slot-date="<%= time_slot.start_time.strftime("%A, %B %d, %Y") %>"
+                           data-max-tables="<%= time_slot.max_tables %>"
+                           data-table-capacity="<%= time_slot.table_capacity %>"
+                           data-reservation-count="<%= time_slot.reservations.count %>"
+                           onclick="openReservationModal(<%= time_slot.id %>)">
+                        <%= time_slot.start_time.strftime("%l:%M%p") %>
+                        <% time_slot.reservations.each do |reservation| %>
+                          <div class="reservation-data-<%= time_slot.id %>" style="display: none;"
                                data-user-name="<%= reservation.user.full_name %>"
                                data-user-email="<%= reservation.user.email %>"
                                data-user-phone="<%= reservation.user.contact_number %>"
@@ -283,7 +283,7 @@
                          style="color: #818cf8; font-size: 0.625rem; text-align: center; margin-top: 0.25rem; cursor: pointer; padding: 0.25rem; border-radius: 0.25rem; transition: all 0.2s;"
                          onmouseover="this.style.backgroundColor='rgba(79, 70, 229, 0.2)'; this.style.color='#a5b4fc';"
                          onmouseout="this.style.backgroundColor='transparent'; this.style.color='#818cf8';">
-                      +<%= day_reservations.count - 2 %> (click)
+                      +<%= day_time_slots.count - 2 %> (click)
                     </div>
                   <% end %>
                 </div>

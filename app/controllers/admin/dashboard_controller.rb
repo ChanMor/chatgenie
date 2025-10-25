@@ -23,12 +23,8 @@ module Admin
                             .where(start_time: @start_date.beginning_of_day..@end_date.end_of_day)
                             .order(:start_time)
       
-      # Group reservations by date for calendar view
-      @reservations_by_date = @time_slots.each_with_object(Hash.new { |h, k| h[k] = [] }) do |slot, hash|
-        slot.reservations.each do |reservation|
-          hash[slot.start_time.to_date] << { time_slot: slot, reservation: reservation }
-        end
-      end
+      # Group TIME SLOTS (not individual reservations) by date for calendar view
+      @time_slots_by_date = @time_slots.group_by { |slot| slot.start_time.to_date }
     end
   end
 end
