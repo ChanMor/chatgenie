@@ -1,0 +1,72 @@
+<div style="display: flex; min-height: calc(100vh - 80px); align-items: center; justify-content: center; padding: 2rem;">
+  <div style="width: 100%; max-width: 600px;">
+    <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%); border-radius: 0.75rem; padding: 2.5rem; border: 1px solid rgba(79, 70, 229, 0.3); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem; color: #ffffff;">Add New Time Slot</h1>
+      <p style="color: #9ca3af; margin-bottom: 2rem; font-size: 0.875rem;">Create a new available time slot for reservations</p>
+
+      <%= form_with(model: [:admin, @time_slot]) do |form| %>
+        <% if @time_slot.errors.any? %>
+          <div style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #991b1b; background-color: rgba(69, 10, 10, 0.5); color: #fecaca; border-radius: 0.5rem;">
+            <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">
+              <%= pluralize(@time_slot.errors.count, "error") %> prohibited this time slot from being saved:
+            </h2>
+            <ul style="list-style: disc; margin-left: 1.5rem;">
+              <% @time_slot.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div style="margin-bottom: 1.5rem;">
+          <%= form.label :start_time, "Date and Time", style: "display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;" %>
+          <%= form.datetime_local_field :start_time, 
+              min: Time.current.strftime("%Y-%m-%dT%H:%M"),
+              style: "display: block; width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem;",
+              onfocus: "this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';",
+              onblur: "this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';" %>
+          <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">
+            Cannot create time slots in the past
+          </p>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <%= form.label :max_tables, "Maximum Number of Tables", style: "display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;" %>
+          <%= form.number_field :max_tables, 
+              in: 1..50, 
+              value: @time_slot.max_tables || 10,
+              style: "display: block; width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem;",
+              onfocus: "this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';",
+              onblur: "this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';" %>
+          <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">
+            How many tables are available for this time slot?
+          </p>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <%= form.label :table_capacity, "Table Capacity (Max People)", style: "display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;" %>
+          <%= form.number_field :table_capacity, 
+              in: 1..20, 
+              value: @time_slot.table_capacity || 4,
+              style: "display: block; width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem;",
+              onfocus: "this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';",
+              onblur: "this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';" %>
+          <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">
+            Maximum number of people allowed per table
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <%= form.submit "Create Time Slot", 
+              style: "flex: 1; display: flex; justify-content: center; border-radius: 0.5rem; background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); padding: 0.75rem 1.5rem; font-weight: 600; color: #ffffff; cursor: pointer; border: none; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); transition: all 0.2s;",
+              onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(79, 70, 229, 0.4)';",
+              onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(79, 70, 229, 0.3)';" %>
+          <%= link_to "Cancel", admin_time_slots_path, 
+              style: "flex: 1; text-align: center; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; color: #d1d5db; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 500; transition: all 0.2s;",
+              onmouseover: "this.style.backgroundColor='rgba(255, 255, 255, 0.05)';",
+              onmouseout: "this.style.backgroundColor='transparent';" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

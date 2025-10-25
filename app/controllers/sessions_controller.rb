@@ -10,10 +10,10 @@ class SessionsController < ApplicationController
 
       if user.admin?
         # If the user is an admin, redirect to the admin dashboard
-        redirect_to admin_root_path, notice: 'Logged in successfully as Admin.'
+        redirect_to admin_root_path
       else
         # If the user is a customer, redirect to their reservations page
-        redirect_to reservations_path, notice: 'Logged in successfully.'
+        redirect_to reservations_path
       end
 
     else
@@ -24,6 +24,6 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    redirect_to root_path, notice: 'Logged out'
+    redirect_to root_path
   end
 end

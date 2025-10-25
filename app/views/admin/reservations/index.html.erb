@@ -1,24 +1,258 @@
-<div style="max-width: 1000px; margin: 2rem auto; padding: 2rem; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-  <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem;">Upcoming Reservations</h1>
+<div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(79, 70, 229, 0.3);">
+    <div>
+      <h1 style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">
+        Manage Reservations
+      </h1>
+      <p style="color: #9ca3af; font-size: 0.875rem;">View and manage all customer reservations</p>
+    </div>
+  </div>
 
-  <table style="width: 100%; text-align: left;">
-    <thead>
-      <tr>
-        <th style="padding: 0.5rem;">Date & Time</th>
-        <th style="padding: 0.5rem;">Customer</th>
-        <th style="padding: 0.5rem;">Table</th>
-        <th style="padding: 0.5rem;">Party Size</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @reservations.each do |reservation| %>
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 0.5rem;"><%= reservation.reservation_time.strftime("%A, %b %d, %Y at %l:%M %p") %></td>
-          <td style="padding: 0.5rem;"><%= reservation.user.email %></td>
-          <td style="padding: 0.5rem;"><%= reservation.table.name %></td>
-          <td style="padding: 0.5rem;"><%= reservation.party_size %></td>
-        </tr>
+  <%# Filter Form - uses GET method to put the date in the URL %>
+  <%= form_with(url: admin_reservations_path, method: :get, style: "margin-bottom: 2rem; background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.6) 100%); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(79, 70, 229, 0.2); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);") do %>
+  <% end %>
+
+  <% if @reservations.any? %>
+    <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.6) 100%); border-radius: 0.75rem; overflow: hidden; border: 1px solid rgba(79, 70, 229, 0.2); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">
+      <table style="width: 100%; text-align: left; border-collapse: collapse;">
+        <thead style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%);">
+          <tr style="border-bottom: 2px solid rgba(79, 70, 229, 0.3);">
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Customer</th>
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Date & Time</th>
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Party Size</th>
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Capacity</th>
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Contact</th>
+            <th style="padding: 1rem; color: #e5e7eb; font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reservations.each do |reservation| %>
+            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s;"
+                onmouseover="this.style.backgroundColor='rgba(79, 70, 229, 0.1)'; this.style.transform='scale(1.01)';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.transform='scale(1)';">
+              <td style="padding: 1rem;">
+                <div style="font-weight: 600; color: #ffffff; margin-bottom: 0.25rem;"><%= reservation.user.full_name %></div>
+                <div style="color: #9ca3af; font-size: 0.875rem;"><%= reservation.user.email %></div>
+              </td>
+              <td style="padding: 1rem;">
+                <div style="color: #e5e7eb; font-weight: 500;">
+                  <%= reservation.time_slot.start_time.strftime("%b %d, %Y") %>
+                </div>
+                <div style="color: #9ca3af; font-size: 0.875rem;">
+                  <%= reservation.time_slot.start_time.strftime("%l:%M %p") %>
+                </div>
+              </td>
+              <td style="padding: 1rem;">
+                <span style="font-weight: 700; color: #818cf8; font-size: 1.125rem;"><%= reservation.party_size %></span>
+                <span style="color: #9ca3af; font-size: 0.875rem;"> people</span>
+              </td>
+              <td style="padding: 1rem;">
+                <span style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%); border: 1px solid rgba(129, 140, 248, 0.3); color: #a5b4fc; font-size: 0.875rem; font-weight: 500;">
+                  Max <%= reservation.table_capacity %>
+                </span>
+              </td>
+              <td style="padding: 1rem;">
+                <div style="color: #9ca3af; font-size: 0.875rem;">
+                  <%= reservation.user.contact_number %>
+                </div>
+              </td>
+              <td style="padding: 1rem;">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <%= link_to "Modify", '#', 
+                      style: "color: #818cf8; text-decoration: none; font-weight: 500; font-size: 0.875rem; transition: all 0.2s;",
+                      onmouseover: "this.style.color='#a5b4fc';",
+                      onmouseout: "this.style.color='#818cf8';",
+                      onclick: "openModifyModal(#{reservation.id}, '#{reservation.user.full_name}', '#{reservation.user.email}', '#{reservation.user.contact_number}', #{reservation.party_size}, #{reservation.table_capacity}, '#{reservation.time_slot.start_time.strftime("%b %d, %Y at %l:%M %p")}'); return false;" %>
+                  <%= button_to "Cancel", admin_reservation_path(reservation), 
+                      method: :delete, 
+                      data: { turbo_confirm: "Are you sure you want to cancel this reservation?" }, 
+                      style: "background: none; border: none; padding: 0; color: #f87171; cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: all 0.2s;",
+                      onmouseover: "this.style.color='#fca5a5';",
+                      onmouseout: "this.style.color='#f87171';" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div style="text-align: center; padding: 4rem 2rem; background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.6) 100%); border-radius: 0.75rem; border: 1px solid rgba(79, 70, 229, 0.2);">
+      <p style="color: #e5e7eb; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No reservations found</p>
+      <% if params[:filter_date].present? %>
+        <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">
+          Try clearing the filter to see all reservations.
+        </p>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  <% end %>
 </div>
+
+<!-- Modify Reservation Modal -->
+<div id="modifyModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 1000; align-items: center; justify-content: center;">
+  <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.98) 0%, rgba(17, 24, 39, 0.98) 100%); border-radius: 1rem; max-width: 500px; width: 90%; border: 2px solid rgba(79, 70, 229, 0.4); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+    <!-- Modal Header -->
+    <div style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(79, 70, 229, 0.3); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h2 style="font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">Modify Reservation</h2>
+        <p id="modalDateTime" style="color: #9ca3af; font-size: 0.875rem;"></p>
+      </div>
+      <button onclick="closeModifyModal()" style="background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 1.5rem; padding: 0.5rem; transition: all 0.2s;" onmouseover="this.style.color='#ffffff';" onmouseout="this.style.color='#9ca3af';">
+        ✕
+      </button>
+    </div>
+    
+    <!-- Modal Body -->
+    <div style="padding: 2rem;">
+      <form id="modifyForm">
+        <input type="hidden" id="reservationId" name="reservation_id">
+        
+        <!-- Customer Info (Read-only) -->
+        <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(129, 140, 248, 0.15) 100%); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(79, 70, 229, 0.3);">
+          <h3 style="font-size: 0.875rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; margin-bottom: 1rem;">Customer Information</h3>
+          <div style="margin-bottom: 0.75rem;">
+            <p style="font-size: 1.125rem; font-weight: 600; color: #ffffff;" id="modalCustomerName"></p>
+          </div>
+          <div>
+            <p style="color: #9ca3af; font-size: 0.875rem;" id="modalCustomerEmail"></p>
+          </div>
+        </div>
+        
+        <!-- Editable Fields -->
+        <div style="margin-bottom: 1.5rem;">
+          <label for="contactNumber" style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;">
+            Contact Number
+          </label>
+          <input type="text" id="contactNumber" name="contact_number" required
+                 style="width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem;"
+                 onfocus="this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';"
+                 onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';">
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+          <label for="partySize" style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;">
+            Party Size
+          </label>
+          <input type="number" id="partySize" name="party_size" min="1" required
+                 style="width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem;"
+                 onfocus="this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';"
+                 onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';">
+          <p style="color: #9ca3af; font-size: 0.75rem; margin-top: 0.5rem;">
+            Maximum capacity: <span id="maxCapacity" style="color: #818cf8; font-weight: 600;"></span> people
+          </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" onclick="closeModifyModal()" 
+                  style="flex: 1; padding: 0.75rem 1.5rem; border-radius: 0.5rem; color: #d1d5db; border: 1px solid rgba(255, 255, 255, 0.2); background: transparent; cursor: pointer; font-weight: 600; transition: all 0.2s;"
+                  onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.05)';"
+                  onmouseout="this.style.backgroundColor='transparent';">
+            Cancel
+          </button>
+          <button type="submit" 
+                  style="flex: 1; padding: 0.75rem 1.5rem; border-radius: 0.5rem; background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); color: #ffffff; border: none; cursor: pointer; font-weight: 600; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); transition: all 0.2s;"
+                  onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(79, 70, 229, 0.4)';"
+                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(79, 70, 229, 0.3)';">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModifyModal(reservationId, customerName, customerEmail, contactNumber, partySize, maxCapacity, dateTime) {
+  const modal = document.getElementById('modifyModal');
+  
+  // Set modal content
+  document.getElementById('reservationId').value = reservationId;
+  document.getElementById('modalCustomerName').textContent = customerName;
+  document.getElementById('modalCustomerEmail').textContent = customerEmail;
+  document.getElementById('modalDateTime').textContent = dateTime;
+  document.getElementById('contactNumber').value = contactNumber;
+  document.getElementById('partySize').value = partySize;
+  document.getElementById('maxCapacity').textContent = maxCapacity;
+  document.getElementById('partySize').setAttribute('max', maxCapacity);
+  
+  // Show modal
+  modal.style.display = 'flex';
+  setTimeout(() => {
+    modal.style.opacity = '1';
+  }, 10);
+}
+
+function closeModifyModal() {
+  const modal = document.getElementById('modifyModal');
+  modal.style.opacity = '0';
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 200);
+}
+
+// Handle form submission
+document.getElementById('modifyForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const reservationId = document.getElementById('reservationId').value;
+  const contactNumber = document.getElementById('contactNumber').value;
+  const partySize = document.getElementById('partySize').value;
+  const maxCapacity = parseInt(document.getElementById('maxCapacity').textContent);
+  
+  // Validate party size
+  if (parseInt(partySize) > maxCapacity) {
+    alert(`Party size cannot exceed maximum capacity of ${maxCapacity} people`);
+    return;
+  }
+  
+  // Send update request
+  fetch(`/admin/reservations/${reservationId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+      reservation: {
+        contact_number: contactNumber,
+        party_size: partySize
+      }
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      closeModifyModal();
+      // Reload the page to show updated data
+      location.reload();
+    } else {
+      alert(data.error || 'Failed to update reservation');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to update reservation');
+  });
+});
+
+// Close modal when clicking outside
+document.getElementById('modifyModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModifyModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('modifyModal');
+    if (modal.style.display === 'flex') {
+      closeModifyModal();
+    }
+  }
+});
+
+// Add transition for smooth fade
+document.getElementById('modifyModal').style.transition = 'opacity 0.2s ease-in-out';
+</script>

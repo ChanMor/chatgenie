@@ -1,27 +1,72 @@
 <%# Only show the navigation bar if a user is logged in %>
 <% if logged_in? %>
-  <nav style="background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 1rem 2rem; margin-bottom: 2rem;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-      <div style="display: flex; align-items: center; gap: 2rem;">
-        <span style="font-weight: 700; font-size: 1.25rem;">Reservations</span>
-        
+  <nav style="background: rgba(17, 24, 39, 0.95)); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(79, 70, 229, 0.3); padding: 1rem 2rem; margin-bottom: 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);">
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; position: relative;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Logo/Brand -->
+        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 1.25rem; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);">R</div>
+        <span style="font-weight: 700; font-size: 1.125rem; color: #ffffff; letter-spacing: -0.025em;">Restaurant</span>
+      </div>
+      
+      <%# Centered navigation links %>
+      <div style="position: absolute; left: 50%; transform: translateX(-50%);">
         <%# Admin-specific links %>
         <% if current_user.admin? %>
-          <%= link_to "Dashboard", admin_root_path, style: "text-decoration: none; color: #374151;" %>
-          <%= link_to "Manage Reservations", '#', style: "text-decoration: none; color: #374151;" %>
-          <%= link_to "Manage Tables", '#', style: "text-decoration: none; color: #374151;" %>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <%= link_to admin_root_path, 
+                style: "text-decoration: none; color: #{request.path == admin_root_path || request.path.start_with?('/admin/dashboard') ? '#818cf8' : '#d1d5db'}; font-weight: 500; padding: 0.625rem 1rem; border-radius: 0.375rem; transition: all 0.2s; background-color: #{request.path == admin_root_path || request.path.start_with?('/admin/dashboard') ? 'rgba(79, 70, 229, 0.15)' : 'transparent'}; border: 1px solid #{request.path == admin_root_path || request.path.start_with?('/admin/dashboard') ? 'rgba(79, 70, 229, 0.3)' : 'transparent'};",
+                onmouseover: "if (this.style.backgroundColor === 'transparent' || this.style.backgroundColor === '') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }",
+                onmouseout: "if ('#{request.path == admin_root_path || request.path.start_with?('/admin/dashboard')}' === 'false') { this.style.backgroundColor='transparent'; }" do %>
+              Dashboard
+            <% end %>
+            
+            <%= link_to admin_reservations_path, 
+                style: "text-decoration: none; color: #{request.path == admin_reservations_path ? '#818cf8' : '#d1d5db'}; font-weight: 500; padding: 0.625rem 1rem; border-radius: 0.375rem; transition: all 0.2s; background-color: #{request.path == admin_reservations_path ? 'rgba(79, 70, 229, 0.15)' : 'transparent'}; border: 1px solid #{request.path == admin_reservations_path ? 'rgba(79, 70, 229, 0.3)' : 'transparent'};",
+                onmouseover: "if (this.style.backgroundColor === 'transparent' || this.style.backgroundColor === '') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }",
+                onmouseout: "if ('#{request.path == admin_reservations_path}' === 'false') { this.style.backgroundColor='transparent'; }" do %>
+              Reservations
+            <% end %>
+            
+            <%= link_to admin_time_slots_path, 
+                style: "text-decoration: none; color: #{request.path.start_with?('/admin/time_slots') ? '#818cf8' : '#d1d5db'}; font-weight: 500; padding: 0.625rem 1rem; border-radius: 0.375rem; transition: all 0.2s; background-color: #{request.path.start_with?('/admin/time_slots') ? 'rgba(79, 70, 229, 0.15)' : 'transparent'}; border: 1px solid #{request.path.start_with?('/admin/time_slots') ? 'rgba(79, 70, 229, 0.3)' : 'transparent'};",
+                onmouseover: "if (this.style.backgroundColor === 'transparent' || this.style.backgroundColor === '') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }",
+                onmouseout: "if ('#{request.path.start_with?('/admin/time_slots')}' === 'false') { this.style.backgroundColor='transparent'; }" do %>
+              Time Slots
+            <% end %>
+          </div>
         
         <%# Customer-specific links %>
         <% else %>
-          <%= link_to "My Reservations", '#', style: "text-decoration: none; color: #374151;" %>
-          <%= link_to "Book a Reservation", '#', style: "text-decoration: none; color: #374151;" %>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <%= link_to reservations_path, 
+                style: "text-decoration: none; color: #{request.path == reservations_path ? '#818cf8' : '#d1d5db'}; font-weight: 500; padding: 0.625rem 1rem; border-radius: 0.375rem; transition: all 0.2s; background-color: #{request.path == reservations_path ? 'rgba(79, 70, 229, 0.15)' : 'transparent'}; border: 1px solid #{request.path == reservations_path ? 'rgba(79, 70, 229, 0.3)' : 'transparent'};",
+                onmouseover: "if (this.style.backgroundColor === 'transparent' || this.style.backgroundColor === '') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }",
+                onmouseout: "if ('#{request.path == reservations_path}' === 'false') { this.style.backgroundColor='transparent'; }" do %>
+              My Reservations
+            <% end %>
+
+            <%= link_to new_reservation_path, 
+                style: "text-decoration: none; color: #{request.path.start_with?('/reservations/new') || request.path.start_with?('/reservations/slot') ? '#818cf8' : '#d1d5db'}; font-weight: 500; padding: 0.625rem 1rem; border-radius: 0.375rem; transition: all 0.2s; background-color: #{request.path.start_with?('/reservations/new') || request.path.start_with?('/reservations/slot') ? 'rgba(79, 70, 229, 0.15)' : 'transparent'}; border: 1px solid #{request.path.start_with?('/reservations/new') || request.path.start_with?('/reservations/slot') ? 'rgba(79, 70, 229, 0.3)' : 'transparent'};",
+                onmouseover: "if (this.style.backgroundColor === 'transparent' || this.style.backgroundColor === '') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }",
+                onmouseout: "if ('#{request.path.start_with?('/reservations/new') || request.path.start_with?('/reservations/slot')}' === 'false') { this.style.backgroundColor='transparent'; }" do %>
+              Book a Table
+            <% end %>
+          </div>
         <% end %>
       </div>
 
       <div style="display: flex; align-items: center; gap: 1rem;">
-        <span style="color: #6b7280;"><%= current_user.first_name %></span>
-        <%# The logout button must use a POST/DELETE method for security %>
-        <%= button_to "Logout", logout_path, method: :delete, style: "background-color: #ef4444; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; border: none; cursor: pointer;" %>
+        <div style="padding: 0.5rem 1rem; background-color: rgba(255, 255, 255, 0.05); border-radius: 0.375rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+          <span style="color: #e5e7eb; font-size: 0.875rem; font-weight: 500;">
+            <%= current_user.full_name %>
+          </span>
+        </div>
+        <%= button_to "Logout", logout_path, method: :delete, 
+            style: "background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;",
+            onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(79, 70, 229, 0.4)';",
+            onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(79, 70, 229, 0.3)';" %>     
+
+
       </div>
     </div>
   </nav>

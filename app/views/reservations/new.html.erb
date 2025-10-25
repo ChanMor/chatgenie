@@ -1,38 +1,182 @@
-<div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-  <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem;">Make a Reservation</h1>
-  
-  <%# Display errors from the controller %>
-  <% if flash.now[:alert] %>
-    <div style="color: red; margin-bottom: 1rem;"><%= flash.now[:alert] %></div>
-  <% end %>
-
-  <%= form_with(model: @reservation, url: reservations_path) do |form| %>
-    <% if @reservation.errors.any? %>
-      <div style="color: red; margin-bottom: 1rem;">
-        <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation:</h2>
-        <ul>
-          <% @reservation.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div style="margin-bottom: 1.5rem;">
-      <%= form.label :party_size, style: "display: block; font-weight: 500;" %>
-      <%= form.number_field :party_size, in: 1..10, style: "width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem;" %>
-    </div>
-
-    <div style="margin-bottom: 1.5rem;">
-      <%= form.label :reservation_time, "Date and Time", style: "display: block; font-weight: 500;" %>
-      <%= form.select :reservation_time, 
-            options_for_select(@available_slots.map { |s| [s.strftime("%A, %b %d at %l:%M %p"), s] }), 
-            {}, 
-            { style: "width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem;" } %>
-    </div>
-    
+<div style="max-width: 1400px; margin: 1.5rem auto; padding: 1.5rem;">
+ 
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(79, 70, 229, 0.3);">
     <div>
-      <%= form.submit "Book Reservation", style: "background-color: #4f46e5; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; border: none;" %>
+      <h1 style="font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">Book a Table</h1>
+      <p style="color: #9ca3af; font-size: 0.875rem;">Select a date to view available time slots</p>
+    </div>
+  </div>
+
+  <% if @selected_date %>
+    <!-- Day Detail View - List View of Time Slots -->
+    <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.6) 100%); border-radius: 0.75rem; padding: 1.5rem; border: 1px solid rgba(79, 70, 229, 0.2); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(79, 70, 229, 0.2);">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 600; color: #ffffff;">
+            <%= @selected_date.strftime("%A, %B %d, %Y") %>
+          </h2>
+          <p style="color: #9ca3af; font-size: 0.75rem; margin-top: 0.25rem;">
+            Current time: <%= Time.current.strftime("%l:%M %p") %> | Booking available for slots after <%= (Time.current + 2.hours).strftime("%l:%M %p") %>
+          </p>
+        </div>
+        <%= link_to "Back to Calendar", new_reservation_path(month: @selected_date.month, year: @selected_date.year), 
+            style: "padding: 0.5rem 1rem; border-radius: 0.5rem; background: rgba(79, 70, 229, 0.2); border: 1px solid rgba(129, 140, 248, 0.3); color: #a5b4fc; text-decoration: none; font-weight: 500; font-size: 0.875rem; transition: all 0.2s;",
+            onmouseover: "this.style.backgroundColor='rgba(79, 70, 229, 0.3)';",
+            onmouseout: "this.style.backgroundColor='rgba(79, 70, 229, 0.2)';" %>
+      </div>
+
+      <% if @time_slots.any? %>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <% @time_slots.each do |slot| %>
+            <% 
+              now = Time.current
+              is_past = slot.start_time <= now
+              is_too_soon = slot.start_time < (now + 2.hours) && slot.start_time > now
+              is_available = slot.available? && !is_too_soon && !is_past
+            %>
+            
+            <% if is_available %>
+              <%= link_to reservation_slot_path(time_slot_id: slot.id), 
+                  style: "display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-left: 4px solid #22c55e; border-radius: 0.5rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%); text-decoration: none; transition: all 0.2s; border: 1px solid rgba(34, 197, 94, 0.3);",
+                  onmouseover: "this.style.backgroundColor='rgba(34, 197, 94, 0.15)'; this.style.transform='translateX(4px)';",
+                  onmouseout: "this.style.background='linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%)'; this.style.transform='translateX(0)';" do %>
+                <div>
+                  <div style="font-weight: 700; color: #22c55e; margin-bottom: 0.5rem; font-size: 1.25rem;">
+                    <%= slot.start_time.strftime("%l:%M %p") %>
+                  </div>
+                  <div style="font-size: 0.875rem; color: #86efac; font-weight: 500;">
+                    Max <%= slot.table_capacity %> people
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 1rem; color: #86efac; font-weight: 600; margin-bottom: 0.25rem;">
+                    <%= slot.available_tables_count %> <%= slot.available_tables_count == 1 ? 'table' : 'tables' %> left
+                  </div>
+                  <div style="font-size: 0.75rem; color: #6ee7b7; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Available
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-left: 4px solid #ef4444; border-radius: 0.5rem; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); border: 1px solid rgba(239, 68, 68, 0.3); opacity: 0.6;">
+                <div>
+                  <div style="font-weight: 700; color: #ef4444; margin-bottom: 0.5rem; font-size: 1.25rem;">
+                    <%= slot.start_time.strftime("%l:%M %p") %>
+                  </div>
+                  <div style="font-size: 0.875rem; color: #fca5a5; font-weight: 500;">
+                    <% if is_past %>
+                      Past time slot
+                    <% elsif is_too_soon %>
+                      Too soon (need 2 hours advance)
+                    <% else %>
+                      Fully Booked
+                    <% end %>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.875rem; color: #fca5a5; font-weight: 600;">
+                    Not Available
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div style="text-align: center; padding: 3rem; color: #9ca3af;">
+          <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">No time slots available for this date</p>
+          <p style="font-size: 0.875rem;">Please select another date</p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <!-- Monthly Calendar View -->
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(31, 41, 55, 0.5) 0%, rgba(17, 24, 39, 0.5) 100%); border-radius: 0.75rem; border: 1px solid rgba(79, 70, 229, 0.2);">
+        <% prev_month = @current_date - 1.month %>
+        <% next_month = @current_date + 1.month %>
+
+        <%= link_to new_reservation_path(month: prev_month.month, year: prev_month.year), 
+            style: "color: #818cf8; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: all 0.2s;",
+            onmouseover: "this.style.backgroundColor='rgba(79, 70, 229, 0.15)';",
+            onmouseout: "this.style.backgroundColor='transparent';" do %>
+        Previous
+        <% end %>
+        
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: #ffffff;">
+          <%= @current_date.strftime("%B %Y") %>
+        </h2>
+        
+        <%= link_to new_reservation_path(month: next_month.month, year: next_month.year), 
+            style: "color: #818cf8; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: all 0.2s;",
+            onmouseover: "this.style.backgroundColor='rgba(79, 70, 229, 0.15)';",
+            onmouseout: "this.style.backgroundColor='transparent';" do %>
+        Next
+        <% end %>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.6) 100%); border-radius: 0.75rem; padding: 2rem; border: 1px solid rgba(79, 70, 229, 0.2); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);">
+      <!-- Day headers -->
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+        <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
+          <div style="text-align: center; font-weight: 600; color: #9ca3af; padding: 0.75rem; font-size: 0.875rem;"><%= day %></div>
+        <% end %>
+      </div>
+      
+      <!-- Calendar Grid -->
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.75rem;">
+        <% 
+          calendar_start = @start_of_month.beginning_of_week(:sunday)
+          calendar_end = @end_of_month.end_of_week(:sunday)
+          (calendar_start..calendar_end).each do |date|
+        %>
+          <% 
+            is_current_month = date.month == @current_date.month
+            is_today = date == Date.today
+            is_past = date < Date.today
+            availability = @calendar_data[date]
+          %>
+          
+          <% if is_current_month && !is_past && availability %>
+            <% 
+              is_available = availability == 'available'
+              border_color = is_available ? 'rgba(34, 197, 94, 0.4)' : 'rgba(239, 68, 68, 0.4)'
+              bg_color = is_available ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'
+              text_color = is_available ? '#22c55e' : '#ef4444'
+              status_text_color = is_available ? '#86efac' : '#fca5a5'
+              day_weight = is_today ? '700' : '500'
+              day_color = is_today ? '#818cf8' : text_color
+              day_size = is_today ? '1.25rem' : '1.125rem'
+              status_text = is_available ? 'Available' : 'Not Available'
+            %>
+            
+            <%= link_to new_reservation_path(date: date), 
+                style: "min-height: 100px; padding: 0.75rem; border: 1px solid #{border_color}; border-radius: 0.5rem; background-color: #{bg_color}; text-decoration: none; transition: all 0.2s; display: block; #{is_available ? '' : 'cursor: pointer;'}",
+                onmouseover: is_available ? "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.3)';" : "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.3)';",
+                onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='none';" do %>
+              <div style="font-weight: <%= day_weight %>; color: <%= day_color %>; margin-bottom: 0.5rem; font-size: <%= day_size %>;">
+                <%= date.day %>
+              </div>
+              <div style="font-size: 0.75rem; color: <%= status_text_color %>; font-weight: 500;">
+                <%= status_text %>
+              </div>
+            <% end %>
+          <% else %>
+            <% 
+              border_color = is_current_month ? 'rgba(79, 70, 229, 0.2)' : 'rgba(255, 255, 255, 0.05)'
+              bg_color = is_current_month ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.2)'
+              day_weight = is_today ? '700' : '500'
+              day_color = is_today ? '#818cf8' : (is_current_month ? '#e5e7eb' : '#6b7280')
+              day_size = is_today ? '1.25rem' : '1.125rem'
+            %>
+            <div style="min-height: 100px; padding: 0.75rem; border: 1px solid <%= border_color %>; border-radius: 0.5rem; background-color: <%= bg_color %>;">
+              <div style="font-weight: <%= day_weight %>; color: <%= day_color %>; margin-bottom: 0.5rem; font-size: <%= day_size %>;">
+                <%= date.day %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

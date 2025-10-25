@@ -4,38 +4,87 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:destroy]
 
   def index
-    # User dashboard - show only their own upcoming reservations
+    # User dashboard - show only their own reservations
     @reservations = current_user.reservations
-                                .where('reservation_time >= ?', Time.current)
-                                .order(:reservation_time)
+                                .includes(:time_slot)
+                                .upcoming
   end
 
   def new
-    @reservation = Reservation.new(party_size: 2) # Default party size
-    @available_slots = find_available_slots(Time.zone.now.to_date)
+    # Monthly calendar view
+    if params[:date]
+      @current_date = Date.parse(params[:date])
+    elsif params[:month] && params[:year]
+      @current_date = Date.new(params[:year].to_i, params[:month].to_i, 1)
+    else
+      @current_date = Date.today
+    end
+    
+    # If a specific date is selected, show time slots for that day
+    if params[:date]
+      @selected_date = @current_date
+      # Show all time slots for the day (including past and too soon)
+      @time_slots = TimeSlot.includes(:reservations)
+                            .where(start_time: @selected_date.beginning_of_day..@selected_date.end_of_day)
+                            .order(:start_time)
+    else
+      # Show monthly calendar
+      @start_of_month = @current_date.beginning_of_month
+      @end_of_month = @current_date.end_of_month
+      
+      # Get ALL time slots for the month to determine which days have slots
+      all_time_slots = TimeSlot.includes(:reservations)
+                               .where(start_time: @start_of_month.beginning_of_day..@end_of_month.end_of_day)
+      
+      minimum_time = Time.current + 2.hours
+      
+      # Group by date and calculate availability status for each day
+      @calendar_data = {}
+      all_time_slots.group_by { |slot| slot.start_time.to_date }.each do |date, slots|
+        # Check if any slot is bookable (available AND more than 2 hours away)
+        bookable_count = slots.count { |slot| slot.available? && slot.start_time >= minimum_time }
+        
+        if bookable_count > 0
+          @calendar_data[date] = 'available'
+        else
+          # Has slots but all are either full, past, or too soon
+          @calendar_data[date] = 'full'
+        end
+      end
+    end
+  end
+  
+  def show_slot
+    @time_slot = TimeSlot.find(params[:time_slot_id])
+    @reservation = current_user.reservations.build(
+      time_slot: @time_slot,
+      party_size: params[:party_size] || 2
+    )
   end
 
   def create
-    @reservation = current_user.reservations.build(reservation_params)
-
-    # Find an available table for the requested time and party size
-    available_tables = Table.where('capacity >= ?', @reservation.party_size)
-                            .where.not(id: Reservation.where(reservation_time: @reservation.reservation_time).select(:table_id))
+    @time_slot = TimeSlot.find(params[:reservation][:time_slot_id])
     
-    if available_tables.any?
-      @reservation.table = available_tables.first
-      if @reservation.save
-        redirect_to reservations_path, notice: "Reservation successfully created!"
-      else
-        # If reservation fails validation (e.g., party size is 0)
-        @available_slots = find_available_slots(@reservation.reservation_time.to_date)
-        render :new, status: :unprocessable_entity
-      end
+    # Check if time slot is still available
+    unless @time_slot.available?
+      redirect_to new_reservation_path, alert: "Sorry, this time slot is no longer available."
+      return
+    end
+    
+    # Check if reservation is at least 2 hours in advance
+    if @time_slot.start_time < Time.current + 2.hours
+      redirect_to new_reservation_path, alert: "Reservations must be made at least 2 hours in advance."
+      return
+    end
+    
+    @reservation = current_user.reservations.build(reservation_params)
+    @reservation.time_slot = @time_slot
+    @reservation.table_capacity = @time_slot.table_capacity
+    
+    if @reservation.save
+      redirect_to reservations_path, notice: "Reservation successfully created!"
     else
-      # If no tables are available
-      flash.now[:alert] = "Sorry, no tables are available for that time and party size."
-      @available_slots = find_available_slots(@reservation.reservation_time.to_date)
-      render :new, status: :unprocessable_entity
+      render :show_slot, status: :unprocessable_entity
     end
   end
 
@@ -47,7 +96,7 @@ class ReservationsController < ApplicationController
     end
 
     # Business Rule: Cannot cancel within 2 hours
-    if @reservation.reservation_time > Time.current + 2.hours
+    if @reservation.cancellable?
       @reservation.destroy
       redirect_to reservations_path, notice: "Reservation successfully cancelled."
     else
@@ -58,24 +107,10 @@ class ReservationsController < ApplicationController
   private
 
   def reservation_params
-    params.require(:reservation).permit(:reservation_time, :party_size)
+    params.require(:reservation).permit(:party_size, :time_slot_id)
   end
 
   def set_reservation
     @reservation = Reservation.find(params[:id])
-  end
-  
-  # This is a simplified helper to generate time slots. A real app might be more complex.
-  def find_available_slots(date)
-    start_of_day = date.to_datetime.change(hour: 17) # Restaurant opens at 5 PM
-    end_of_day = date.to_datetime.change(hour: 22) # Last slot at 10 PM
-    
-    slots = []
-    current_slot = start_of_day
-    while current_slot < end_of_day
-      slots << current_slot
-      current_slot += 1.hour
-    end
-    slots
   end
 end

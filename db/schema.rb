@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_25_075205) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_25_092015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,10 +18,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_075205) do
     t.datetime "created_at", null: false
     t.integer "party_size"
     t.datetime "reservation_time"
-    t.bigint "table_id", null: false
+    t.integer "table_capacity"
+    t.bigint "table_id"
+    t.bigint "time_slot_id"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["table_id"], name: "index_reservations_on_table_id"
+    t.index ["time_slot_id", "created_at"], name: "index_reservations_on_time_slot_id_and_created_at"
+    t.index ["time_slot_id"], name: "index_reservations_on_time_slot_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
@@ -30,6 +34,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_075205) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "time_slots", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "max_tables", default: 1, null: false
+    t.datetime "start_time", null: false
+    t.integer "table_capacity", null: false
+    t.datetime "updated_at", null: false
+    t.index ["start_time"], name: "index_time_slots_on_start_time"
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,5 +58,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_25_075205) do
   end
 
   add_foreign_key "reservations", "tables"
+  add_foreign_key "reservations", "time_slots"
   add_foreign_key "reservations", "users"
 end

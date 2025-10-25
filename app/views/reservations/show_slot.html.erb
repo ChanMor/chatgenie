@@ -1,0 +1,186 @@
+<div style="display: flex; min-height: calc(100vh - 80px); align-items: center; justify-content: center; padding: 1.5rem;">
+  <div style="width: 100%; max-width: 550px;">
+    <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%); border-radius: 0.75rem; padding: 2rem; border: 1px solid rgba(79, 70, 229, 0.3); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+      <h1 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; color: #ffffff;">
+        Complete Your Reservation
+      </h1>
+      <p style="color: #9ca3af; margin-bottom: 1.5rem; font-size: 1rem; font-weight: 500;">
+        <%= @time_slot.start_time.strftime("%A, %B %d, %Y") %><br>
+        <%= @time_slot.start_time.strftime("%l:%M %p") %>
+      </p>
+
+      <%= form_with(model: @reservation, url: reservations_path, id: "reservation-form") do |form| %>
+        <%= form.hidden_field :time_slot_id, value: @time_slot.id %>
+        
+        <% if @reservation.errors.any? %>
+          <div style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #991b1b; background: linear-gradient(135deg, rgba(69, 10, 10, 0.5) 0%, rgba(127, 29, 29, 0.5) 100%); color: #fecaca; border-radius: 0.5rem; border-left: 4px solid #ef4444;">
+            <h2 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
+              <%= pluralize(@reservation.errors.count, "error") %> prevented this reservation:
+            </h2>
+            <ul style="list-style: disc; margin-left: 1.5rem; font-size: 0.875rem;">
+              <% @reservation.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Time Slot Details -->
+        <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(129, 140, 248, 0.15) 100%); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(129, 140, 248, 0.3);">
+          <h3 style="font-weight: 600; margin-bottom: 0.75rem; color: #ffffff; font-size: 1rem;">
+            Table Details
+          </h3>
+          <div style="display: flex; gap: 2rem;">
+            <div>
+              <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Maximum capacity</p>
+              <p style="color: #a5b4fc; font-weight: 700; font-size: 1.125rem;"><%= @time_slot.table_capacity %> people</p>
+            </div>
+            <div>
+              <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Available tables</p>
+              <p style="color: #86efac; font-weight: 700; font-size: 1.125rem;"><%= @time_slot.available_tables_count %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Party Size -->
+        <div style="margin-bottom: 1.5rem;">
+          <%= form.label :party_size, "Number of People", style: "display: block; font-weight: 500; margin-bottom: 0.5rem; color: #e5e7eb; font-size: 0.875rem;" %>
+          <%= form.number_field :party_size, 
+              in: 1..@time_slot.table_capacity, 
+              style: "display: block; width: 100%; border-radius: 0.5rem; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.75rem; color: #ffffff; font-size: 1rem; font-weight: 600;",
+              onfocus: "this.style.borderColor='rgba(129, 140, 248, 0.5)'; this.style.backgroundColor='rgba(255, 255, 255, 0.08)';",
+              onblur: "this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 0.05)';" %>
+          <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">
+            How many people will be dining? (Max: <%= @time_slot.table_capacity %>)
+          </p>
+        </div>
+
+        <!-- Auto-filled User Information -->
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(79, 70, 229, 0.15) 100%); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid #3b82f6;">
+          <h3 style="font-weight: 600; margin-bottom: 0.75rem; color: #93c5fd; font-size: 1rem;">
+            Your Contact Information
+          </h3>
+          <div style="margin-bottom: 0.5rem; font-size: 0.875rem;">
+            <span style="color: #9ca3af;">Name:</span>
+            <strong style="margin-left: 0.5rem; color: #e5e7eb;"><%= current_user.full_name %></strong>
+          </div>
+          <div style="margin-bottom: 0.5rem; font-size: 0.875rem;">
+            <span style="color: #9ca3af;">Email:</span>
+            <strong style="margin-left: 0.5rem; color: #e5e7eb;"><%= current_user.email %></strong>
+          </div>
+          <div style="font-size: 0.875rem;">
+            <span style="color: #9ca3af;">Phone:</span>
+            <strong style="margin-left: 0.5rem; color: #e5e7eb;"><%= current_user.contact_number %></strong>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display: flex; gap: 1rem;">
+          <button type="button" onclick="showConfirmationModal()" 
+              style="flex: 1; display: flex; justify-content: center; align-items: center; border-radius: 0.5rem; background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); padding: 0.75rem 1.25rem; font-weight: 600; color: #ffffff; cursor: pointer; border: none; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3); transition: all 0.2s; font-size: 0.875rem;",
+              onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(79, 70, 229, 0.4)';",
+              onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(79, 70, 229, 0.3)';">
+            Confirm Reservation
+          </button>
+          <%= link_to new_reservation_path, 
+              style: "flex: 1; text-align: center; padding: 0.75rem 1.25rem; border-radius: 0.5rem; text-decoration: none; color: #d1d5db; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 500; font-size: 0.875rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center;",
+              onmouseover: "this.style.backgroundColor='rgba(255, 255, 255, 0.05)';",
+              onmouseout: "this.style.backgroundColor='transparent';" do %>
+            Cancel
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmation-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;">
+  <div style="background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%); border-radius: 0.75rem; padding: 1.5rem; max-width: 500px; width: 100%; margin: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); border: 1px solid rgba(79, 70, 229, 0.3);">
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #ffffff;">
+      Confirm Your Reservation
+    </h2>
+    
+    <div style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(129, 140, 248, 0.15) 100%); border-radius: 0.5rem; border: 1px solid rgba(129, 140, 248, 0.3);">
+      <div style="margin-bottom: 0.75rem; font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Date & Time:</span>
+        <div style="font-weight: 600; color: #ffffff; font-size: 1rem; margin-top: 0.25rem;">
+          <%= @time_slot.start_time.strftime("%A, %B %d, %Y") %><br>
+          <%= @time_slot.start_time.strftime("%l:%M %p") %>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 0.75rem; font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Party Size:</span>
+        <div style="font-weight: 700; color: #818cf8; font-size: 1.25rem; margin-top: 0.25rem;" id="modal-party-size">-</div>
+      </div>
+      
+      <div style="margin-bottom: 0.75rem; font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Table Capacity:</span>
+        <div style="font-weight: 600; color: #a5b4fc; font-size: 1rem; margin-top: 0.25rem;">
+          <%= @time_slot.table_capacity %> people
+        </div>
+      </div>
+      
+      <hr style="margin: 1rem 0; border: 0; border-top: 1px solid rgba(129, 140, 248, 0.2);">
+      
+      <div style="margin-bottom: 0.5rem; font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Name:</span>
+        <span style="font-weight: 600; color: #e5e7eb; margin-left: 0.5rem;"><%= current_user.full_name %></span>
+      </div>
+      
+      <div style="margin-bottom: 0.5rem; font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Email:</span>
+        <span style="font-weight: 600; color: #e5e7eb; margin-left: 0.5rem;"><%= current_user.email %></span>
+      </div>
+      
+      <div style="font-size: 0.875rem;">
+        <span style="color: #9ca3af;">Phone:</span>
+        <span style="font-weight: 600; color: #e5e7eb; margin-left: 0.5rem;"><%= current_user.contact_number %></span>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 1rem;">
+      <button type="button" onclick="submitReservation()" 
+          style="flex: 1; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%); color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; cursor: pointer; border: none; font-weight: 700; font-size: 0.875rem; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.3); transition: all 0.2s;",
+          onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(22, 163, 74, 0.4)';",
+          onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(22, 163, 74, 0.3)';">
+        Yes, Book It!
+      </button>
+      <button type="button" onclick="hideConfirmationModal()" 
+          style="flex: 1; display: flex; justify-content: center; align-items: center; background: rgba(107, 114, 128, 0.2); color: #d1d5db; padding: 0.75rem 1.25rem; border-radius: 0.5rem; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 500; font-size: 0.875rem; transition: all 0.2s;",
+          onmouseover: "this.style.backgroundColor='rgba(107, 114, 128, 0.3)';",
+          onmouseout: "this.style.backgroundColor='rgba(107, 114, 128, 0.2)';">
+        Go Back
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showConfirmationModal() {
+  const partySize = document.querySelector('#reservation_party_size').value;
+  if (!partySize || partySize < 1) {
+    alert('Please enter the number of people.');
+    return;
+  }
+  
+  document.getElementById('modal-party-size').textContent = partySize + ' people';
+  document.getElementById('confirmation-modal').style.display = 'flex';
+}
+
+function hideConfirmationModal() {
+  document.getElementById('confirmation-modal').style.display = 'none';
+}
+
+function submitReservation() {
+  document.getElementById('reservation-form').submit();
+}
+
+// Close modal on background click
+document.getElementById('confirmation-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    hideConfirmationModal();
+  }
+});
+</script>

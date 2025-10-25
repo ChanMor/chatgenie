@@ -22,4 +22,8 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, if: -> { new_record? || !password.nil? }
 
   has_many :reservations, dependent: :destroy
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
