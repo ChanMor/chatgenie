@@ -1,0 +1,24 @@
+<div style="max-width: 1000px; margin: 2rem auto; padding: 2rem; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem;">Upcoming Reservations</h1>
+
+  <table style="width: 100%; text-align: left;">
+    <thead>
+      <tr>
+        <th style="padding: 0.5rem;">Date & Time</th>
+        <th style="padding: 0.5rem;">Customer</th>
+        <th style="padding: 0.5rem;">Table</th>
+        <th style="padding: 0.5rem;">Party Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reservations.each do |reservation| %>
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 0.5rem;"><%= reservation.reservation_time.strftime("%A, %b %d, %Y at %l:%M %p") %></td>
+          <td style="padding: 0.5rem;"><%= reservation.user.email %></td>
+          <td style="padding: 0.5rem;"><%= reservation.table.name %></td>
+          <td style="padding: 0.5rem;"><%= reservation.party_size %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

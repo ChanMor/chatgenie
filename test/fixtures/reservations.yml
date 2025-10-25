@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  table: one
+  reservation_time: 2025-10-25 15:23:16
+  party_size: 1
+
+two:
+  user: two
+  table: two
+  reservation_time: 2025-10-25 15:23:16
+  party_size: 1

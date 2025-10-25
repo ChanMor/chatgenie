@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "reservations/index"
+  get "reservations/new"
+  get "reservations/create"
+  get "reservations/destroy"
   root "sessions#new"
 
   get "sessions/new"
@@ -21,4 +25,20 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
+
+  resources :reservations, only: [:index, :new, :create, :destroy]
+  
+  namespace :admin do
+    get "reservations/index"
+    get "tables/index"
+    get "tables/new"
+    get "tables/create"
+    get "tables/edit"
+    get "tables/update"
+    get "tables/destroy"
+    # Directs /admin to the tables index page
+    root "tables#index"
+    resources :tables
+    resources :reservations, only: [:index]
+  end
 end
