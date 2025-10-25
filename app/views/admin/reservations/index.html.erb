@@ -104,7 +104,7 @@
     
     <!-- Modal Body -->
     <div style="padding: 2rem;">
-      <form id="modifyForm">
+      <form id="modifyForm" onsubmit="return false;">
         <input type="hidden" id="reservationId" name="reservation_id">
         
         <!-- Customer Info (Read-only) -->
@@ -206,12 +206,23 @@ document.getElementById('modifyForm').addEventListener('submit', function(e) {
     return;
   }
   
+  // Get CSRF token
+  const csrfToken = document.querySelector('meta[name="csrf-token"]');
+  if (!csrfToken) {
+    console.error('CSRF token not found in page');
+    alert('Security token not found. Please refresh the page.');
+    return;
+  }
+  
+  console.log('Sending update request for reservation:', reservationId);
+  
   // Send update request
   fetch(`/admin/reservations/${reservationId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      'X-CSRF-Token': csrfToken.content,
+      'Accept': 'application/json'
     },
     body: JSON.stringify({
       reservation: {
@@ -220,8 +231,20 @@ document.getElementById('modifyForm').addEventListener('submit', function(e) {
       }
     })
   })
-  .then(response => response.json())
+  .then(response => {
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      return response.text().then(text => {
+        console.error('Server response:', text);
+        throw new Error(`Server error: ${response.status}`);
+      });
+    }
+    return response.json();
+  })
   .then(data => {
+    console.log('Response data:', data);
+    
     if (data.success) {
       closeModifyModal();
       // Reload the page to show updated data
@@ -232,7 +255,7 @@ document.getElementById('modifyForm').addEventListener('submit', function(e) {
   })
   .catch(error => {
     console.error('Error:', error);
-    alert('Failed to update reservation');
+    alert('Failed to update reservation: ' + error.message);
   });
 });
 
