@@ -27,8 +27,9 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   resources :reservations, only: [:index, :new, :create, :destroy]
-  
+
   namespace :admin do
+    get "dashboard/show"
     get "reservations/index"
     get "tables/index"
     get "tables/new"
@@ -37,7 +38,7 @@ Rails.application.routes.draw do
     get "tables/update"
     get "tables/destroy"
     # Directs /admin to the tables index page
-    root "tables#index"
+    root 'dashboard#show'
     resources :tables
     resources :reservations, only: [:index]
   end

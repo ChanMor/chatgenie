@@ -18,7 +18,11 @@
           </ul>
         </div>
       <% end %>
-
+        <% if flash[:alert] %>
+        <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #991b1b; background-color: #450a0a; color: #fecaca; border-radius: 0.375rem;">
+            <%= flash[:alert] %>
+        </div>
+        <% end %>
       <%# NEW: Flex container for First and Last name %>
       <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
         <%# First Name field wrapper %>
